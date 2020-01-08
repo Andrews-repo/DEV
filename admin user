@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: This is a template that makes an admin user and applies the billin and admin access policies. 
+Parameters:
+  Password:
+    NoEcho: 'true'
+    Type: String
+    Description: New Admin Password
+Resources:
+  MyUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: user-admin
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AdministratorAccess'
+        - 'arn:aws:iam::aws:policy/job-function/Billing'
+      LoginProfile:
+        Password:
+          Ref: 'Password'
