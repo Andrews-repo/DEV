@@ -1,13 +1,15 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: This is a template that makes an admin user and applies the billin and admin access policies. Creates programatic access keys as well.  
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This is a template that makes an admin user and applies the billin and admin
+  access policies. Creates programatic access keys as well.
 Parameters:
   Password:
     NoEcho: 'true'
     Type: String
     Description: New Admin Password
 Resources:
-   MyUser:
-    Type: AWS::IAM::User
+  MyUser:
+    Type: 'AWS::IAM::User'
     Properties:
       UserName: Andrew-Admin
       ManagedPolicyArns:
@@ -15,9 +17,17 @@ Resources:
         - 'arn:aws:iam::aws:policy/job-function/Billing'
       LoginProfile:
         Password:
-          Ref: 'Password'
-   CFNKeys:
-    Type: AWS::IAM::AccessKey
+          Ref: Password
+  CFNKeys:
+    Type: 'AWS::IAM::AccessKey'
     Properties:
       UserName:
-        Ref: 'MyUser'
+        Ref: MyUser
+Outputs:
+  AccessKey:
+    Value: 
+     Ref: 'CFNKeys'
+    Description: AWSAccessKeyId of new user
+  SecretKey:
+    Value: !GetAtt [CFNKeys, SecretAccessKey]
+    Description: AWSSecretAccessKey of new use
