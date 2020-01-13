@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  This is a template that makes an admin user and applies the billin and admin
+  This is a template that makes an admin user and applies the billing and admin
   access policies. Creates programatic access keys as well.
 Parameters:
   Password:
