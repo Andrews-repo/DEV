@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+    Password:
+        NoEcho: 'true'
+        Type: String
+        Description: New account password
+Resources:
+  MyUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: ADMIN
+      LoginProfile:
+        Password: 
+          !Ref 'Password'
+  MyAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref "MyUser"    
+  MyGroup:
+    Type: AWS::IAM::Group  
+    Properties:
+        GroupName: admin
+        ManagedPolicyArns:
+         - arn:aws:iam::aws:policy/AdministratorAccess
+         - arn:aws:iam::aws:policy/job-function/Billing
+  Users:
+    Type: AWS::IAM::UserToGroupAddition
+    Properties:
+      GroupName: !Ref 'MyGroup'
+      Users: [!Ref 'MyUser']
+Outputs:
+    AccessKey:
+      Value: !Ref 'MyAccessKey'
+      Description: AWS AccessKeyID of new user.
+    SecretKey:
+      Value: !GetAtt [MyAccessKey, SecretAccessKey]
+      Description: AWSSecretAccessKey of new user. 
