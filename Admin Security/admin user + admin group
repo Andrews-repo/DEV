@@ -16,14 +16,13 @@ Resources:
     Type: AWS::IAM::Group  
     Properties:
         GroupName: admin
-        ManagedPoliciyArns:
+        ManagedPolicyArns:
          - arn:aws:iam::aws:policy/AdministratorAccess
          - arn:aws:iam::aws:policy/job-function/Billing
-  Users:
+  addUserToGroup:
     Type: AWS::IAM::UserToGroupAddition
     Properties:
       GroupName:
         Ref 'MyGroup'
       Users:
         Ref 'MyUser'
- 
