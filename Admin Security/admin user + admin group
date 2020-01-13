@@ -1,3 +1,4 @@
+
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
     Password:
@@ -11,7 +12,7 @@ Resources:
       UserName: ADMIN
       LoginProfile:
         Password: 
-          Ref 'Password'
+          !Ref 'Password'
   MyGroup:
     Type: AWS::IAM::Group  
     Properties:
@@ -19,10 +20,8 @@ Resources:
         ManagedPolicyArns:
          - arn:aws:iam::aws:policy/AdministratorAccess
          - arn:aws:iam::aws:policy/job-function/Billing
-  addUserToGroup:
+  Users:
     Type: AWS::IAM::UserToGroupAddition
     Properties:
-      GroupName:
-        Ref 'MyGroup'
-      Users:
-        Ref 'MyUser'
+      GroupName: !Ref 'MyGroup'
+      Users: [!Ref 'MyUser']
