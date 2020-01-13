@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+    Password:
+        NoEcho: 'true'
+        Type: String
+        Description: New account password
+Resources:
+  MyUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: ADMIN
+      LoginProfile:
+        Password: 
+          Ref 'Password'
+  MyGroup:
+    Type: AWS::IAM::Group  
+    Properties:
+        GroupName: admin
+        ManagedPoliciyArns:
+         - arn:aws:iam::aws:policy/AdministratorAccess
+         - arn:aws:iam::aws:policy/job-function/Billing
+  Users:
+    Type: AWS::IAM::UserToGroupAddition
+    Properties:
+      GroupName:
+        Ref 'MyGroup'
+      Users:
+        Ref 'MyUser'
+ 
