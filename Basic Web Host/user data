@@ -5,4 +5,4 @@ yum install wget -y
 service httpd start
 chkconfig httpd on
 cd /var/www/html
-wget https://raw.githubusercontent.com/Andrews-repo/AWS-Automations/master/Basic%20Web%20Host/index.html?token=AOFSPDC46P4FAU46IST4FES6DVA2Y
+wget https://raw.githubusercontent.com/Andrews-repo/AWS-Automations/master/Basic%20Web%20Host/index.html
