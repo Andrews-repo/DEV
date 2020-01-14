@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+    Password:
+        NoEcho: 'true'
+        Type: String
+        Description: New account password
+Resources:
+  MyUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: ADMIN
+      LoginProfile:
+        Password: 
+          !Ref 'Password'
+  MyUser2:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: ec2User
+      LoginProfile:
+        Password: 
+          !Ref 'Password' 
+  MyAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref "MyUser" 
+  ec2AccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref "MyUser2"    
+  MyGroup:
+    Type: AWS::IAM::Group  
+    Properties:
+        GroupName: admin
+        ManagedPolicyArns:
+         - arn:aws:iam::aws:policy/AdministratorAccess
+         - arn:aws:iam::aws:policy/job-function/Billing
+  MyGroup2:
+    Type: AWS::IAM::Group  
+    Properties:
+        GroupName: ec2fullaccess
+        ManagedPolicyArns:
+         - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+  Admin:
+    Type: AWS::IAM::UserToGroupAddition
+    Properties:
+      GroupName: !Ref 'MyGroup'
+      Users: [!Ref 'MyUser']
+  EC2User:
+    Type: AWS::IAM::UserToGroupAddition
+    Properties:
+      GroupName: !Ref 'MyGroup2'
+      Users: [!Ref 'MyUser2']
+Outputs:
+    AccessKey:
+      Value: !Ref 'MyAccessKey'
+      Description: AWS AccessKeyID of new user.
+    SecretKey:
+      Value: !GetAtt [MyAccessKey, SecretAccessKey]
+      Description: AWSSecretAccessKey of new user. 
+    AccessKey:
+      Value: !Ref 'ec2AccessKey'
+      Description: AWS AccessKeyID of new ec2 user.
+    SecretKey:
+      Value: !GetAtt [ec2AccessKey, SecretAccessKey]
+      Description: AWSSecretAccessKey of new ec2 user.
