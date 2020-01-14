@@ -1,1 +1,1 @@
-This section will host the code need to build a basic website.
+This section will host the code used to build a basic website.
