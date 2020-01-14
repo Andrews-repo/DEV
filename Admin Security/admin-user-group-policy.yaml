@@ -1,8 +1,4 @@
-#password policy template taken from :https://templates.cloudonaut.io/en/stable/security/#account-password-policy
-
-
-AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Security: Account Password Policy, a cloudonaut.io template'
+AWSTemplateFormatVersion: 2010-09-09
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
@@ -24,9 +20,9 @@ Metadata:
       - LogsRetentionInDays
 Parameters:
   Password:
-    NoEcho: 'true'
-    Type: String
-    Description: New Admin Password
+        NoEcho: 'true'
+        Type: String
+        Description: New account password
   AllowUsersToChangePassword:
     Description: 'You can permit all IAM users in your account to use the IAM console to change their own passwords.'
     Type: String
@@ -97,20 +93,28 @@ Parameters:
     AllowedValues: [1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653]
 Resources:
   MyUser:
-    Type: 'AWS::IAM::User'
+    Type: AWS::IAM::User
     Properties:
-      UserName: Andrew-Admin
-      ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/AdministratorAccess'
-        - 'arn:aws:iam::aws:policy/job-function/Billing'
+      UserName: ADMIN
       LoginProfile:
-        Password:
-          Ref: Password
-  CFNKeys:
-    Type: 'AWS::IAM::AccessKey'
+        Password: 
+          !Ref 'Password'
+  MyAccessKey:
+    Type: AWS::IAM::AccessKey
     Properties:
-      UserName:
-        Ref: MyUser
+      UserName: !Ref "MyUser"    
+  MyGroup:
+    Type: AWS::IAM::Group  
+    Properties:
+        GroupName: admin
+        ManagedPolicyArns:
+         - arn:aws:iam::aws:policy/AdministratorAccess
+         - arn:aws:iam::aws:policy/job-function/Billing
+  Users:
+    Type: AWS::IAM::UserToGroupAddition
+    Properties:
+      GroupName: !Ref 'MyGroup'
+      Users: [!Ref 'MyUser']
   LambdaRole:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -211,21 +215,11 @@ Resources:
       RequireNumbers: !Ref RequireNumbers
       RequireSymbols: !Ref RequireSymbols
       RequireUppercaseCharacters: !Ref RequireUppercaseCharacters
-      ServiceToken: !GetAtt 'LambdaFunctionV2.Arn'
+      ServiceToken: !GetAtt 'LambdaFunctionV2.Arn'      
 Outputs:
-  AccessKey:
-    Value: 
-     Ref: 'CFNKeys'
-    Description: AWSAccessKeyId of new user
-  SecretKey:
-    Value: !GetAtt [CFNKeys, SecretAccessKey]
-    Description: AWSSecretAccessKey of new use
-  TemplateID:
-    Description: 'cloudonaut.io template id.'
-    Value: 'security/account-password-policy'
-  TemplateVersion:
-    Description: 'cloudonaut.io template version.'
-    Value: '__VERSION__'
-  StackName:
-    Description: 'Stack name.'
-    Value: !Sub '${AWS::StackName}'
+    AccessKey:
+      Value: !Ref 'MyAccessKey'
+      Description: AWS AccessKeyID of new user.
+    SecretKey:
+      Value: !GetAtt [MyAccessKey, SecretAccessKey]
+      Description: AWSSecretAccessKey of new user. 
