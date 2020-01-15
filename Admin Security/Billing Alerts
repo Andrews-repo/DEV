@@ -11,6 +11,25 @@ Parameters:
 
 Resources:
 
+  BillingAlertOneDollars:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn: BillingAlertTopic
+    Properties:
+      AlarmActions:
+        - !Ref BillingAlertTopic
+      AlarmDescription: "Account Billing Alert for $1.00"
+      AlarmName: "Billing Alert - Estimated Bill Exceeds $1"
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: Currency
+          Value: USD
+      EvaluationPeriods: 1
+      MetricName: EstimatedCharges
+      Namespace: AWS/Billing
+      Period: 21600
+      Statistic: Maximum
+      Threshold: 1
+
   BillingAlertFiveDollars:
     Type: AWS::CloudWatch::Alarm
     DependsOn: BillingAlertTopic
