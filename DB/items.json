@@ -1,0 +1,28 @@
+{
+    "FortuneDB": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "ID": {"S": "#002"},
+                    "Fortune": {"S": "You betcha."}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ID": {"S": "#003"},
+                    "Fortune": {"S": "Alrighty then"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ID": {"S": "#004"},
+                    "Fortune": {"S": "Ahaha you got it"}
+                }
+            }
+        }
+    ]
+}
