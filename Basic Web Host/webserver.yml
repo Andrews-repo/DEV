@@ -21,6 +21,7 @@ Resources:
                 yum update -y
                 yum install httpd -y
                 yum install wget -y
+                sudo yum install wget -y
                 service httpd start
                 chkconfig httpd on
                 cd /var/www/html
