@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-062f7200baf2fa504"
+      KeyName: "newkeypair"
+      BlockDeviceMappings: 
+      - DeviceName: "/dev/xvda"
+        Ebs: 
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          VolumeSize: "20"
+      InstanceType: 't2.micro'
+      SecurityGroupIds:
+        - sg-0da8c45dd859d8183
