@@ -22,6 +22,10 @@ nvm install node
 
 node -e "console.log('Running Node.js ' + process.version)"
 
+*Use npm to creat the package.json file by running the following:
+
+npm init
+
 *Use npm to install the AWS-SDK for javascript by typing the following:
 
 npm install aws-sdk
