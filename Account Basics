@@ -1,3 +1,0 @@
-These are various Templates to use to secure a brand new AWS, by creating aditional users, groups, and policies. 
-
-At current time I have some cloudformation scripts, but intend to be adding addition forms of automation.
