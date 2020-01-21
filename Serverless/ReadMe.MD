@@ -7,4 +7,4 @@ Serverless
 * Create an AWS API Gateway, use it to forward HTTP requests to an AWS Lambda function that queries the same data from DynamoDB as your EB Microservice.
 * Your S3 static content should make Javascript calls to the API Gateway and then update the page with the retrieved data.
 * Once you have the "Get Fortune" API Gateway + Lambda working, do the "New Fortune" API.
-*Checkpoint: Your API Gateway and S3 Bucket are fronted by CloudFront with SSL. You have no EC2 instances deployed. All work is done by AWS services and billed as consumed.
+* Checkpoint: Your API Gateway and S3 Bucket are fronted by CloudFront with SSL. You have no EC2 instances deployed. All work is done by AWS services and billed as consumed.
