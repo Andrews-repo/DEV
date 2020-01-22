@@ -18,9 +18,9 @@ Resources:
         Fn::Base64:
               !Sub
                 #!/bin/bash
-                yum update -y
-                yum install httpd -y
-                yum install wget -y
+                sudo yum update -y
+                sudo yum install httpd -y
+                sudo yum install wget -y
                 sudo yum install wget -y
                 service httpd start
                 chkconfig httpd on
