@@ -14,17 +14,10 @@ Resources:
       InstanceType: 't2.micro'
       SecurityGroupIds:
         - sg-0da8c45dd859d8183
-      SubnetId:
-         Ref: vpc-f33a6389
-      NetworkInterfaces:
-      - NetworkInterfaceId:
-         Ref: controlXface
-        DeviceIndex: '0'        
       UserData:
         Fn::Base64:
               !Sub
                 #!/bin/bash
-                Ref: WebServerPort
                 sudo yum update -y
                 sudo yum install httpd -y
                 service httpd start                
@@ -32,3 +25,11 @@ Resources:
                 sudo yum install -y wget
                 cd /var/www/html
                 wget https://raw.githubusercontent.com/Andrews-repo/DEV/master/Basic%20Web%20Host/index.html
+  NetworkInterfaceAttachment:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        InstanceId:
+           Ref: Webserver
+        NetworkInterfaceId:
+           Ref: MyNetworkInterface
+        DeviceIndex: 1           
