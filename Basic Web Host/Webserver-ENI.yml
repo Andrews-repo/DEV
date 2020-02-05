@@ -1,10 +1,29 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
+  myENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+      Description: A nice description.
+      SourceDestCheck: 'false'
+      GroupSet:
+        - sg-0da8c45dd859d8183
+      SubnetId: subnet-00f7a63e    
   WebServer:
     Type: AWS::EC2::Instance
-    Properties: 
+    Properties:
+      AvailabilityZone: us-east-1e
       ImageId: "ami-062f7200baf2fa504"
-      KeyName: "newkeypair"
+      KeyName: "workkey"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install httpd -y
+          service httpd start                
+          chkconfig httpd on
+          sudo yum install -y wget
+          cd /var/www/html
+          wget https://raw.githubusercontent.com/Andrews-repo/DEV/master/Basic%20Web%20Host/index.html
       BlockDeviceMappings: 
       - DeviceName: "/dev/xvda"
         Ebs: 
@@ -12,24 +31,6 @@ Resources:
           DeleteOnTermination: "true"
           VolumeSize: "8"
       InstanceType: 't2.micro'
-      SecurityGroupIds:
-        - sg-0da8c45dd859d8183
-      UserData:
-        Fn::Base64:
-              !Sub
-                #!/bin/bash
-                sudo yum update -y
-                sudo yum install httpd -y
-                service httpd start                
-                chkconfig httpd on
-                sudo yum install -y wget
-                cd /var/www/html
-                wget https://raw.githubusercontent.com/Andrews-repo/DEV/master/Basic%20Web%20Host/index.html
-  NetworkInterfaceAttachment:
-     Type: AWS::EC2::NetworkInterfaceAttachment
-     Properties:
-        InstanceId:
-           Ref: Webserver
-        NetworkInterfaceId:
-           Ref: MyNetworkInterface
-        DeviceIndex: 1           
+      NetworkInterfaces:
+        - NetworkInterfaceId: !Ref myENI
+          DeviceIndex: 0     
