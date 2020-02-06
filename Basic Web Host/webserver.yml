@@ -15,13 +15,12 @@ Resources:
       SecurityGroupIds:
         - sg-0da8c45dd859d8183
       UserData:
-        Fn::Base64:
-              !Sub
-                #!/bin/bash
-                sudo yum update -y
-                sudo yum install httpd -y
-                service httpd start                
-                chkconfig httpd on
-                sudo yum install -y wget
-                cd /var/www/html
-                wget https://raw.githubusercontent.com/Andrews-repo/DEV/master/Basic%20Web%20Host/index.html
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install httpd -y
+          service httpd start                
+          chkconfig httpd on
+          sudo yum install -y wget
+          cd /var/www/html
+          wget https://raw.githubusercontent.com/Andrews-repo/DEV/master/Basic%20Web%20Host/index.html
