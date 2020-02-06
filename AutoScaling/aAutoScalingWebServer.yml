@@ -1,0 +1,15 @@
+Resources:
+  WebServer:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties: 
+      ImageId: "ami-062f7200baf2fa504"
+      KeyName: "newkeypair"
+      BlockDeviceMappings: 
+      - DeviceName: "/dev/xvda"
+        Ebs: 
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          VolumeSize: "8"
+      InstanceType: 't2.micro'
+      SecurityGroupIds:
+        - sg-0da8c45dd859d8183
