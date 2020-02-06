@@ -1,5 +1,5 @@
 Resources:
-  WebServer:
+  WSLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties: 
       ImageId: "ami-062f7200baf2fa504"
@@ -13,3 +13,41 @@ Resources:
       InstanceType: 't2.micro'
       SecurityGroups:
         - sg-0da8c45dd859d8183
+  
+  WSAutoScaleGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        Fn::GetAZs: 'us-east-1'
+      LaunchConfigurationName:
+        Ref: WSLaunchConfig
+      MinSize: '1'
+      MaxSize: '3'
+  
+  ScaleUpPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName:
+        Ref: WSAutoScaleGroup
+      Cooldown: '1'
+      ScalingAdjustment: '1'
+ 
+  CPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      EvaluationPeriods: '1'
+      Statistic: Average
+      Threshold: '10'
+      AlarmDescription: Alarm if CPU too high or metric disappears indicating instance
+        is down
+      Period: '60'
+      AlarmActions:
+      - Ref: ScaleUpPolicy
+      Namespace: AWS/EC2
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: WSAutoScaleGroup
+      ComparisonOperator: GreaterThanThreshold
+      MetricName: CPUUtilization
