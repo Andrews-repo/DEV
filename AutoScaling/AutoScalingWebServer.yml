@@ -1,53 +1,31 @@
+AWSTemplateFormatVersion: 2010-09-09
 Resources:
-  WSLaunchConfig:
-    Type: AWS::AutoScaling::LaunchConfiguration
-    Properties: 
-      ImageId: "ami-062f7200baf2fa504"
-      KeyName: "newkeypair"
-      BlockDeviceMappings: 
-      - DeviceName: "/dev/xvda"
-        Ebs: 
-          VolumeType: "gp2"
-          DeleteOnTermination: "true"
-          VolumeSize: "8"
-      InstanceType: 't2.micro'
-      SecurityGroups:
-        - sg-0da8c45dd859d8183
-  
-  WSAutoScaleGroup:
-    Type: AWS::AutoScaling::AutoScalingGroup
+  LaunchTemplate:
+    Type: 'AWS::EC2::LaunchTemplate'
     Properties:
-      AvailabilityZones:
-        Fn::GetAZs: 'us-east-1'
-      LaunchConfigurationName:
-        Ref: WSLaunchConfig
+      LaunchTemplateName: test
+      LaunchTemplateData:
+        BlockDeviceMappings:
+          - Ebs:
+              VolumeSize: 8
+            DeviceName: /dev/sdf
+        ImageId: ami-0022aaab3c3ee7abd
+        InstanceType: t2.micro
+        KeyName: workkey
+        Monitoring:
+          Enabled: true
+        SecurityGroupIds:
+          - sg-0da8c45dd859d8183
+  myASG:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      AutoScalingGroupName: myASG
       MinSize: '1'
-      MaxSize: '3'
-  
-  ScaleUpPolicy:
-    Type: AWS::AutoScaling::ScalingPolicy
-    Properties:
-      AdjustmentType: ChangeInCapacity
-      AutoScalingGroupName:
-        Ref: WSAutoScaleGroup
-      Cooldown: '1'
-      ScalingAdjustment: '1'
- 
-  CPUAlarmHigh:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      EvaluationPeriods: '1'
-      Statistic: Average
-      Threshold: '10'
-      AlarmDescription: Alarm if CPU too high or metric disappears indicating instance
-        is down
-      Period: '60'
-      AlarmActions:
-      - Ref: ScaleUpPolicy
-      Namespace: AWS/EC2
-      Dimensions:
-      - Name: AutoScalingGroupName
-        Value:
-          Ref: WSAutoScaleGroup
-      ComparisonOperator: GreaterThanThreshold
-      MetricName: CPUUtilization
+      MaxSize: '6'
+      DesiredCapacity: '1'
+      HealthCheckGracePeriod: 300
+      LaunchTemplate:
+        LaunchTemplateId: !Ref LaunchTemplate
+        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+      AvailabilityZones:
+        'Fn::GetAZs': us-east-1
