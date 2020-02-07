@@ -8,7 +8,7 @@ Resources:
         BlockDeviceMappings:
           - Ebs:
               VolumeSize: 8
-            DeviceName: /dev/sdf
+            DeviceName: /dev/xvda
         ImageId: ami-0022aaab3c3ee7abd
         InstanceType: t2.micro
         KeyName: workkey
