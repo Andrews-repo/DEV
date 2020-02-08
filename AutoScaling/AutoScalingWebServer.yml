@@ -36,7 +36,7 @@ Resources:
       AdjustmentType: ChangeInCapacity
       AutoScalingGroupName: CPUScaleup
       Cooldown: 300
-      EstimatedInstanceWarmup: 30
+      EstimatedInstanceWarmup: 180
       PolicyType: TargetTrackingScaling
       TargetTrackingConfiguration: 
          PredefinedMetricSpecification: ASGAverageCPUUtilization
