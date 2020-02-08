@@ -17,7 +17,7 @@ Resources:
         SecurityGroupIds:
           - sg-0da8c45dd859d8183
   myASG:
-    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Type: 'AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: myASG
       MinSize: '1'
@@ -29,3 +29,15 @@ Resources:
         Version: !GetAtt LaunchTemplate.LatestVersionNumber
       AvailabilityZones:
         'Fn::GetAZs': us-east-1
+  
+  CPUScaleUp:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties: 
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: CPUScaleup
+      Cooldown: 300
+      EstimatedInstanceWarmup: 30
+      PolicyType: TargetTrackingScaling
+      TargetTrackingConfiguration: 
+         PredefinedMetricSpecification: ASGAverageCPUUtilization
+         TargetValue: 60
