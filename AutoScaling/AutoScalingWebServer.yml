@@ -67,8 +67,7 @@ Resources:
         TargetGroupARN: !Ref WSTargetGroup
       LoadBalancerArn: !Ref WSLoadBalancer
       Port: 80
-      Protocol: String
-      SslPolicy: String  
+      Protocol: HTTP  
 
   WSLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
