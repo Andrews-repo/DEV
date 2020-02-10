@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
   LaunchTemplate:
-    Type: 'AWS::EC2::LaunchTemplate'
+    Type: AWS::EC2::LaunchTemplate
     Properties:
       LaunchTemplateName: test
       LaunchTemplateData:
@@ -17,27 +17,69 @@ Resources:
         SecurityGroupIds:
           - sg-0da8c45dd859d8183
   myASG:
-    Type: 'AWS::AutoScaling::AutoScalingGroup
+    Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: myASG
-      MinSize: '1'
-      MaxSize: '6'
-      DesiredCapacity: '1'
+      MinSize: 1
+      MaxSize: 6
+      DesiredCapacity: 1
       HealthCheckGracePeriod: 300
       LaunchTemplate:
         LaunchTemplateId: !Ref LaunchTemplate
         Version: !GetAtt LaunchTemplate.LatestVersionNumber
       AvailabilityZones:
-        'Fn::GetAZs': us-east-1
+        Fn::GetAZs: us-east-1
+      LoadBalancerNames: !Ref WSLoadBalancer
   
   CPUScaleUp:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties: 
       AdjustmentType: ChangeInCapacity
-      AutoScalingGroupName: CPUScaleup
+      AutoScalingGroupName: !Ref myASG
       Cooldown: 300
       EstimatedInstanceWarmup: 180
       PolicyType: TargetTrackingScaling
       TargetTrackingConfiguration: 
-         PredefinedMetricSpecification: ASGAverageCPUUtilization
+         PredefinedMetricSpecification: 
+          PredefinedMetricType: ASGAverageCPUUtilization
          TargetValue: 60
+   
+  WSTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      Name: WSTarget
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes: 
+        - Key: deregistration_delay.timeout_seconds
+          Value: 300
+      Targets: 
+        - Id: !Ref LaunchTemplate
+          Port: 80
+      TargetType: instance
+      VpcId: vpc-f33a6389  
+  
+  WSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties: 
+      DefaultActions: 
+        Type: Forward 
+        TargetGroupARN: !Ref WSTargetGroup
+      LoadBalancerArn: !Ref WSLoadBalancer
+      Port: 80
+      Protocol: String
+      SslPolicy: String  
+
+  WSLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Subnets: 
+        - subnet-00f7a63e
+        - subnet-041add0a
+        - subnet-568c820a
+        - subnet-79ada557
+        - subnet-fc1b169b
+        - subnet-fe0fd2b3
+      SecurityGroups:
+        - sg-0da8c45dd859d8183
+      Type: application
