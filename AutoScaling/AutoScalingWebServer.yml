@@ -30,11 +30,8 @@ Resources:
         Version: !GetAtt LaunchTemplate.LatestVersionNumber
       AvailabilityZones:
         Fn::GetAZs: us-east-1
-      LoadBalancerNames: 
-        - Ref: WSLoadBalancer
       TargetGroupARNs: 
-        - Id:
-            Ref: WSTargetGroup
+        - !Ref WSTargetGroup
   
   CPUScaleUp:
     Type: AWS::AutoScaling::ScalingPolicy
