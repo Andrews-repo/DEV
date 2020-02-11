@@ -36,7 +36,6 @@ Resources:
   CPUScaleUp:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties: 
-      AdjustmentType: ChangeInCapacity
       AutoScalingGroupName: !Ref myASG
       Cooldown: 300
       EstimatedInstanceWarmup: 180
