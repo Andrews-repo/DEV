@@ -23,7 +23,7 @@ Resources:
       AutoScalingGroupName: myASG
       MinSize: 2
       MaxSize: 6
-      DesiredCapacity: 1
+      DesiredCapacity: 2
       HealthCheckGracePeriod: 300
       LaunchTemplate:
         LaunchTemplateId: !Ref LaunchTemplate
