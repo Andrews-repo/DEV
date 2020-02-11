@@ -1,0 +1,13 @@
+create ec2
+
+add inbound rules for security group: HTTP, HTTPS, SSH
+
+after updates and install of software, make outbound rule on port 80 point towards the security group its on
+
+run : amazon-linux-extras list or amazon-linux-extras list | grep nginx to see list/current version
+
+sudo yum instal nginx1 -y
+
+sudo service nginx start
+
+sudo chkconfig nginx1 on
