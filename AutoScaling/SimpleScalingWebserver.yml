@@ -21,7 +21,7 @@ Resources:
     Type: 'AWS::AutoScaling::AutoScalingGroup'
     Properties:
       AutoScalingGroupName: myASG
-      MinSize: 1
+      MinSize: 2
       MaxSize: 6
       DesiredCapacity: 1
       HealthCheckGracePeriod: 300
