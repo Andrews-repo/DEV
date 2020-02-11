@@ -65,7 +65,7 @@ Resources:
     Properties: 
       DefaultActions: 
         - Type: forward
-          TargetGroupARN: !Ref WSTargetGroup
+          TargetGroupArn: !Ref WSTargetGroup
       LoadBalancerArn: !Ref WSLoadBalancer
       Port: 80
       Protocol: HTTP 
