@@ -16,6 +16,7 @@ Resources:
           Enabled: true
         SecurityGroupIds:
           - sg-0da8c45dd859d8183
+          
   myASG:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -29,7 +30,11 @@ Resources:
         Version: !GetAtt LaunchTemplate.LatestVersionNumber
       AvailabilityZones:
         Fn::GetAZs: us-east-1
-      LoadBalancerNames: !Ref WSLoadBalancer
+      LoadBalancerNames: 
+        - Ref: WSLoadBalancer
+      TargetGroupARNs: 
+        - Id:
+            Ref: WSTargetGroup
   
   CPUScaleUp:
     Type: AWS::AutoScaling::ScalingPolicy
@@ -43,31 +48,6 @@ Resources:
          PredefinedMetricSpecification: 
           PredefinedMetricType: ASGAverageCPUUtilization
          TargetValue: 60
-   
-  WSTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties: 
-      Name: WSTarget
-      Port: 80
-      Protocol: HTTP
-      TargetGroupAttributes: 
-        - Key: deregistration_delay.timeout_seconds
-          Value: 300
-      Targets: 
-        - Id: !Ref LaunchTemplate
-          Port: 80
-      TargetType: instance
-      VpcId: vpc-f33a6389  
-  
-  WSListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties: 
-      DefaultActions: 
-        Type: Forward 
-        TargetGroupARN: !Ref WSTargetGroup
-      LoadBalancerArn: !Ref WSLoadBalancer
-      Port: 80
-      Protocol: HTTP  
 
   WSLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -82,3 +62,25 @@ Resources:
       SecurityGroups:
         - sg-0da8c45dd859d8183
       Type: application
+
+  WSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties: 
+      DefaultActions: 
+        - Type: forward
+          TargetGroupARN: !Ref WSTargetGroup
+      LoadBalancerArn: !Ref WSLoadBalancer
+      Port: 80
+      Protocol: HTTP 
+
+  WSTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      Name: WSTargetGroup
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes: 
+        - Key: deregistration_delay.timeout_seconds
+          Value: 300
+      TargetType: instance
+      VpcId: vpc-f33a6389      
