@@ -38,4 +38,8 @@ npm install express --save
 
 npm install pm2 -g
 
+* run app in background with :
+
+pm2 start server.js
+
 
