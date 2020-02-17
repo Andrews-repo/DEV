@@ -33,3 +33,9 @@ npm install aws-sdk
 * Install Express and update package.json with the following command:
 
 npm install express --save
+
+* Install pm2 to keep app up in background :
+
+npm install pm2 -g
+
+
