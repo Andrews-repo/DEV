@@ -16,16 +16,20 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
 nvm install node
 
-*Installing Node.js also installs the Node Package Manager (npm) so you can install additional modules as needed.
+* Installing Node.js also installs the Node Package Manager (npm) so you can install additional modules as needed.
 
-*Test that Node.js is installed and running correctly by typing the following at the command line.
+* Test that Node.js is installed and running correctly by typing the following at the command line.
 
 node -e "console.log('Running Node.js ' + process.version)"
 
-*Use npm to creat the package.json file by running the following:
+* Use npm to creat the package.json file by running the following:
 
 npm init
 
-*Use npm to install the AWS-SDK for javascript by typing the following:
+* Use npm to install the AWS-SDK for javascript by typing the following:
 
 npm install aws-sdk
+
+* Install Express and update package.json with the following command:
+
+npm install express --save
