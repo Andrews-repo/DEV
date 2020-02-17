@@ -1,18 +1,18 @@
 To set up Node.js on your Linux instance
 
-*Connect to your Linux instance as ec2-user using SSH.
+* Connect to your Linux instance as ec2-user using SSH.
 
-*Install node version manager (nvm) by typing the following at the command line.
+* Install node version manager (nvm) by typing the following at the command line.
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
-*We will use nvm to install Node.js because nvm can install multiple versions of Node.js and allow you to switch between them.
+* We will use nvm to install Node.js because nvm can install multiple versions of Node.js and allow you to switch between them.
 
-*Activate nvm by typing the following at the command line.
+* Activate nvm by typing the following at the command line.
 
 . ~/.nvm/nvm.sh
 
-*Use nvm to install the latest version of Node.js by typing the following at the command line.
+* Use nvm to install the latest version of Node.js by typing the following at the command line.
 
 nvm install node
 
