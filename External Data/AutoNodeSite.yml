@@ -1,1 +1,53 @@
-This is where i will write the script that builds the node site + load balancer + data base 
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: This script will create an ec2 install, and install the software to run the fortune node app.
+
+Resources:
+  myENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+      Description: A nice description.
+      SourceDestCheck: 'false'
+      GroupSet:
+        - sg-0da8c45dd859d8183
+      SubnetId: subnet-00f7a63e    
+  
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1e
+      ImageId: "ami-062f7200baf2fa504"
+      KeyName: "workkey"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+          . ~/.nvm/nvm.sh               
+          nvm install node
+          npm install aws-sdk
+          npm install express --save
+          npm install async --save
+          npm install body-parser --save
+          npm install ejs --save
+          npm install random-number-between --save
+          npm install request --save
+          npm install pm2 -g --save
+          sudo yum install -y git
+          sudo mkdir FortuneApp
+          cd FortuneApp
+          git init
+          git pull https://github.com/Andrews-repo/FortuneSite
+          node FortunesCreateTable.js
+          node FortunesItemOps2.js
+          pm2 start server.js
+      BlockDeviceMappings: 
+      - DeviceName: "/dev/xvda"
+        Ebs: 
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          VolumeSize: "8"
+      InstanceType: 't2.micro'
+      NetworkInterfaces:
+        - NetworkInterfaceId: !Ref myENI
+          DeviceIndex: 0     
