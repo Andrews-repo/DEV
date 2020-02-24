@@ -2,7 +2,6 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Launches an autoscaling group for 2 instances min/desired, with a max of six. Scaling up at 60% CPU.
 
 Resources:
-Resources:
   myENI:
     Type: AWS::EC2::NetworkInterface
     Properties:
@@ -66,9 +65,7 @@ Resources:
       MaxSize: 6
       DesiredCapacity: 2
       HealthCheckGracePeriod: 300
-      LaunchTemplate:
-        LaunchTemplateId: !Ref LaunchTemplate
-        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+      InstanceId: Ref WebServer
       AvailabilityZones:
         Fn::GetAZs: us-east-1
       TargetGroupARNs: 
