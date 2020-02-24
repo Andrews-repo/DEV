@@ -14,7 +14,6 @@ Resources:
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: us-east-1e
       ImageId: "ami-062f7200baf2fa504"
       KeyName: "workkey"
       IamInstanceProfile: "DynamoDBfullaccessEC2"
