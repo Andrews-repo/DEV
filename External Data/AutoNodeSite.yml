@@ -18,13 +18,22 @@ Resources:
       AvailabilityZone: us-east-1e
       ImageId: "ami-062f7200baf2fa504"
       KeyName: "workkey"
+      IamInstanceProfile: "DynamoDBfullaccessEC2"
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
-          cd ~
+          sudo touch .bash_profile
           sudo yum update -y
+          sudo yum install -y git
+          cd /home/ec2-user
+          sudo mkdir FortuneApp
+          cd FortuneApp
+          git init
+          git pull https://github.com/Andrews-repo/FortuneSite          
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-          . ~/.nvm/nvm.sh               
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
           nvm install node
           npm install aws-sdk
           npm install express --save
@@ -34,11 +43,6 @@ Resources:
           npm install random-number-between --save
           npm install request --save
           npm install pm2 -g --save
-          sudo yum install -y git
-          sudo mkdir FortuneApp
-          cd FortuneApp
-          git init
-          git pull https://github.com/Andrews-repo/FortuneSite
           node FortunesCreateTable.js
           node FortunesItemOps2.js
           pm2 start server.js
@@ -51,4 +55,4 @@ Resources:
       InstanceType: 't2.micro'
       NetworkInterfaces:
         - NetworkInterfaceId: !Ref myENI
-          DeviceIndex: 0     
+          DeviceIndex: 0 
