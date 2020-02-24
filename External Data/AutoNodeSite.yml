@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 
-Description: This script will create an ec2 install, and install the software to run the fortune node app.
+Description: This script will create an ec2 server, and install the software to run the fortune node app.
 
 Resources:
   myENI:
