@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Launches an autoscaling group for 2 instances min/desired, with a max of six. Scaling up at 60% CPU.
+
+Resources:
+  LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: test
+      LaunchTemplateData:
+        BlockDeviceMappings:
+          - Ebs:
+              VolumeSize: 8
+            DeviceName: /dev/xvda
+        ImageId: ami-0022aaab3c3ee7abd
+        InstanceType: t2.micro
+        KeyName: workkey
+        Monitoring:
+          Enabled: true
+        SecurityGroupIds:
+          - sg-0da8c45dd859d8183
+          
+  myASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: myASG
+      MinSize: 2
+      MaxSize: 6
+      DesiredCapacity: 2
+      HealthCheckGracePeriod: 300
+      LaunchTemplate:
+        LaunchTemplateId: !Ref LaunchTemplate
+        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+      AvailabilityZones:
+        Fn::GetAZs: us-east-1
+      TargetGroupARNs: 
+        - !Ref WSTargetGroup
+  
+  CPUScaleUp:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties: 
+      AutoScalingGroupName: !Ref myASG
+      Cooldown: 300
+      EstimatedInstanceWarmup: 180
+      PolicyType: TargetTrackingScaling
+      TargetTrackingConfiguration: 
+         PredefinedMetricSpecification: 
+          PredefinedMetricType: ASGAverageCPUUtilization
+         TargetValue: 60
+
+  CPUScaleDown:
+      Type: AWS::AutoScaling::ScalingPolicy
+      Properties:
+        AdjustmentType: ChangeInCapacity
+        AutoScalingGroupName: !Ref myASG
+      Cooldown: 60
+      ScalingAdjustment: -1
+
+  WSLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Subnets: 
+        - subnet-00f7a63e
+        - subnet-041add0a
+        - subnet-568c820a
+        - subnet-79ada557
+        - subnet-fc1b169b
+        - subnet-fe0fd2b3
+      SecurityGroups:
+        - sg-0da8c45dd859d8183
+      Type: application
+
+  WSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties: 
+      DefaultActions: 
+        - Type: forward
+          TargetGroupArn: !Ref WSTargetGroup
+      LoadBalancerArn: !Ref WSLoadBalancer
+      Port: 80
+      Protocol: HTTP 
+
+  WSTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      Name: WSTargetGroup
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes: 
+        - Key: deregistration_delay.timeout_seconds
+          Value: 300
+      TargetType: instance
+      VpcId: vpc-f33a6389      
