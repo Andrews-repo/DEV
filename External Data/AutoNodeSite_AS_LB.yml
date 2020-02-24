@@ -65,7 +65,7 @@ Resources:
       MaxSize: 6
       DesiredCapacity: 2
       HealthCheckGracePeriod: 300
-      InstanceId: Ref WebServer
+      InstanceId: !Ref WebServer
       AvailabilityZones:
         Fn::GetAZs: us-east-1
       TargetGroupARNs: 
