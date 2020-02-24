@@ -88,8 +88,8 @@ Resources:
       Properties:
         AdjustmentType: ChangeInCapacity
         AutoScalingGroupName: !Ref myASG
-      Cooldown: 60
-      ScalingAdjustment: -1
+        Cooldown: 60
+        ScalingAdjustment: -1
 
   WSLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -125,4 +125,4 @@ Resources:
         - Key: deregistration_delay.timeout_seconds
           Value: 300
       TargetType: instance
-      VpcId: vpc-f33a6389      
+      VpcId: vpc-f33a6389     
