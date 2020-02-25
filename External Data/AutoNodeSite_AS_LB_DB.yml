@@ -2,6 +2,23 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Launches an autoscaling group for 2 instances min/desired, with a max of six. Scaling up at 60% CPU.
 
 Resources:
+  myDynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: "Fortunes"      
+      AttributeDefinitions: 
+        - 
+          AttributeName: "FortuneID"
+          AttributeType: "N"
+
+      KeySchema: 
+        - 
+          AttributeName: "FortuneID"
+          KeyType: "HASH"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "10"
+        WriteCapacityUnits: "10"
+    
   myENI:
     Type: AWS::EC2::NetworkInterface
     Properties:
@@ -56,19 +73,28 @@ Resources:
         - NetworkInterfaceId: !Ref myENI
           DeviceIndex: 0 
           
+  
+  myLaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: NodeLaunchConfig
+      InstanceType: t2.micro
+      InstanceId: !Ref WebServer
+      IamInstanceProfile: "DynamoDBfullaccessEC2"
+  
   myASG:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: myASG
-      MinSize: 2
+      MinSize: 1
       MaxSize: 6
       DesiredCapacity: 2
       HealthCheckGracePeriod: 300
-      InstanceId: !Ref WebServer
-      AvailabilityZones:
-        Fn::GetAZs: us-east-1
+      LaunchConfigurationName: !Ref myLaunchConfig
       TargetGroupARNs: 
         - !Ref WSTargetGroup
+      AvailabilityZones:
+        Fn::GetAZs: us-east-1          
   
   CPUScaleUp:
     Type: AWS::AutoScaling::ScalingPolicy
@@ -124,4 +150,4 @@ Resources:
         - Key: deregistration_delay.timeout_seconds
           Value: 300
       TargetType: instance
-      VpcId: vpc-f33a6389     
+      VpcId: vpc-f33a6389  
