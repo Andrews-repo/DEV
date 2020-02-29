@@ -53,6 +53,8 @@ Resources:
           nvm install node
           npm install aws-sdk
           npm install express --save
+          npm install express-session --save
+          npm install  --save
           npm install async --save
           npm install body-parser --save
           npm install ejs --save
