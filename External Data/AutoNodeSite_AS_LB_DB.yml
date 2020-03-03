@@ -59,7 +59,6 @@ Resources:
           npm install random-number-between --save
           npm install request --save
           npm install pm2 -g --save
-          node FortunesCreateTable.js
           node FortunesItemOps2.js
           pm2 start server.js
       BlockDeviceMappings: 
