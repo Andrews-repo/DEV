@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Launches an autoscaling group for 2 instances min/desired, with a max of six. Scaling up at 60% CPU.
+Description: Launches an autoscaling group for 1 instance min/desired, with a max of six. Scaling up at 60% CPU.
 
 Resources:
   myDynamoDBTable: 
@@ -87,7 +87,7 @@ Resources:
       AutoScalingGroupName: myASG
       MinSize: 1
       MaxSize: 6
-      DesiredCapacity: 2
+      DesiredCapacity: 1
       HealthCheckGracePeriod: 300
       LaunchConfigurationName: !Ref myLaunchConfig
       TargetGroupARNs: 
