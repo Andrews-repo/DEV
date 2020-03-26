@@ -1,6 +1,6 @@
 Account Basics
 
-* Create an IAM user for your personal use.
+* [Create an IAM user for your personal use.](https://github.com/Andrews-repo/AWS-Project/blob/master/Account%20Basics/admin%20user%20%2B%20admin%20group)
 * Set up MFA for your root user, turn off all root user API keys.
 * Set up Billing Alerts for anything over a few dollars.
 * Configure the AWS CLI for your user using API credentials.
