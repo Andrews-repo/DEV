@@ -5,7 +5,7 @@ External Data
 
 * [Refactor your static page into your Fortune-of-the-Day website (Node, PHP, Python, whatever) which reads/updates a list of fortunes in the AWS DynamoDB table. (Hint: EC2 Instance Role)](https://github.com/Andrews-repo/AWS-Project/blob/master/External%20Data/AutoNodeSite_AS_LB_DB.yml)
 
-This script used to work, needs to be fixed. 
+  This script used to work, needs to be fixed. 
 
 * Checkpoint: Your HA/AutoScaled website can now load/save data to a database between users and sessions
 
