@@ -1,5 +1,11 @@
 Web Hosting Basics
 
-* Deploy a EC2 VM and host a simple static "Fortune-of-the-Day Coming Soon" web page.
+* [Deploy a EC2 VM and host a simple static "Fortune-of-the-Day Coming Soon" web page.](https://github.com/Andrews-repo/AWS-Project/blob/master/Basic%20Web%20Host/Webserver-ENI.yml)
+
 * Take a snapshot of your VM, delete the VM, and deploy a new one from the snapshot. Basically disk backup + disk restore.
+  
+  This is done, but can be automated/documented.
+  
 * Checkpoint: You can view a simple HTML page served from your EC2 instance.
+  
+  This can be done with the script linked above. 
