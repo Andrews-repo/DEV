@@ -11,7 +11,7 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 console.log("Importing Fortunes into DynamoDB. Please wait.");
 
 var allFortunes = JSON.parse(fs.readFileSync('Fortunesdata.json', 'utf8'));
-allFortunes.forEach(function(Fortune) {
+allFortunes.forEach(function(fortune) {
     var params = {
         TableName: "Fortunes",
         Item: {
@@ -22,9 +22,9 @@ allFortunes.forEach(function(Fortune) {
 
     docClient.put(params, function(err, data) {
        if (err) {
-           console.error("Unable to add Fortune", Fortunes.Fortune, ". Error JSON:", JSON.stringify(err, null, 2));
+           console.error("Unable to add Fortune", Fortunes.fortune, ". Error JSON:", JSON.stringify(err, null, 2));
        } else {
-           console.log("PutItem succeeded:", Fortunes.Fortune);
+           console.log("PutItem succeeded:", Fortunes.fortune);
        }
     });
 });
