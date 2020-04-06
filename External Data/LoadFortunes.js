@@ -15,8 +15,8 @@ allFortunes.forEach(function(Fortune) {
     var params = {
         TableName: "Fortunes",
         Item: {
-            "FortuneId": Fortunes.FortuneId,
-            "Fortune": Fortunes.Fortune,
+            "fortuneID": Fortunes.fortuneID,
+            "fortune": Fortunes.fortune,
         }
     };
 
