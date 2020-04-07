@@ -1,10 +1,6 @@
 [
    {
-      "fortuneID" : 1,
-      "fortune" : You will see great success,
-   },
-   {
-      "fortuneID" : 2,
-      "fortune" : Things will change positively very soon,
-   }
+  "fortune": "test",
+  "fortuneID": 1
+}
 ]
