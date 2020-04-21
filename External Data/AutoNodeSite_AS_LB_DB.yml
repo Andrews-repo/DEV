@@ -8,12 +8,12 @@ Resources:
       TableName: "Fortunes"      
       AttributeDefinitions: 
         - 
-          AttributeName: "FortuneID"
+          AttributeName: "fortuneID"
           AttributeType: "N"
 
       KeySchema: 
         - 
-          AttributeName: "FortuneID"
+          AttributeName: "fortuneID"
           KeyType: "HASH"
       ProvisionedThroughput: 
         ReadCapacityUnits: "10"
