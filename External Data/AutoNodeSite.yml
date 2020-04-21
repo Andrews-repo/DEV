@@ -45,7 +45,7 @@ Resources:
           npm install request --save
           npm install pm2 -g --save
           node FortunesCreateTable.js
-          node LoadFortunes.js
+          node LoadFortunes2.js
           node FortunesItemOps2.js
           pm2 start server.js
       BlockDeviceMappings: 
