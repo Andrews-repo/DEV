@@ -11,7 +11,7 @@ Need an idea? Here: Fortune-of-the-Day - Display a random fortune each page load
 
 [Account Basics](https://github.com/Andrews-repo/AWS-Project/tree/master/Account%20Basics).
 
-This section has been automated, but i do need to come back and document how to do some of these things via the CLI.
+This section was focused around setting up a new account and establishing basic AWS security and account recomendations. It has been automated via cloudformation, but I do need to come back and document how to do some of these things via the CLI.
 
 
 [Web Hosting Basics](https://github.com/Andrews-repo/AWS-Project/tree/master/Basic%20Web%20Host).
