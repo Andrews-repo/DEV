@@ -6,6 +6,6 @@ Web Hosting Basics
   
   This is done, but can be automated/documented.
   
-* Checkpoint: You can view a simple HTML page served from your EC2 instance.
+* [Checkpoint: You can view a simple HTML page served from your EC2 instance.](https://github.com/Andrews-repo/AWS-Project/blob/master/Basic%20Web%20Host/Webserver-ENI.yml)
   
-  This can be done with the script linked above. 
+ 
