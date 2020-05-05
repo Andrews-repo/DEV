@@ -25,7 +25,7 @@ I have two scripts that automate the previous website, from an AMI,  into both t
 
 [External Data](https://github.com/Andrews-repo/AWS-Project/tree/master/External%20Data).
 
-This one has been tough, Ive had to learn new technologies. I was stuck for a couple weeks and hadnt worked on an code. Working on solving the issues will be fixed soon. 
+This one has been tough, i got stuck a couple different times. Once i was troubleshooting a syntax error for far too long, simply overlooking the error. The other issue, is that secondary instances of my website overwrite each others entries. I have some ideas on how to solve it, seemingly issues with my node.js, but ill save that for later when I do deep dives on different code languages. 
 
 [Web Hosting Platform-as-a-Service](https://github.com/Andrews-repo/AWS-Project/tree/master/Web%20Hosting%20-%20Platform%20as%20a%20Service)
 
