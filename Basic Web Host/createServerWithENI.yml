@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
+Description: Creates/upadtes a linux server. Installs apache, and wget. Pulls basic html page from github. Verify: security group ID, subnet ID, AMI, keypair. 
 Resources:
   myENI:
     Type: AWS::EC2::NetworkInterface
@@ -6,14 +7,15 @@ Resources:
       Description: A nice description.
       SourceDestCheck: 'false'
       GroupSet:
-        - sg-0da8c45dd859d8183
-      SubnetId: subnet-00f7a63e    
+        - sg-055c055ea1f7b8c99
+      SubnetId: subnet-b60753fa   
+      
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: us-east-1e
-      ImageId: "ami-062f7200baf2fa504"
-      KeyName: "workkey"
+      AvailabilityZone: us-east-2c
+      ImageId: "ami-0f57b4cec24530068"
+      KeyName: "keypairMAY"
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
