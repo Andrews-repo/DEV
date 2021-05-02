@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Creats and admin and an ec2 user and groups, as well as sets access keys.
+Description: Creates and admin and an ec2 user and groups, as well as sets access keys.
 Resources:
   MyUser:
     Type: AWS::IAM::User
