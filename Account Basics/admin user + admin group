@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-
+Description: This CloudFormation template will creat an admin user and admingroup, assigning AdminAccess and billing access to the admin user. 
 Parameters:
     Password:
         NoEcho: 'true'
