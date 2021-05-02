@@ -1,6 +1,6 @@
 Web Hosting Basics
 
-* [Deploy a EC2 VM and host a simple static "Fortune-of-the-Day Coming Soon" web page.](https://github.com/Andrews-repo/AWS-Project/blob/master/Basic%20Web%20Host/Webserver-ENI.yml)
+* [Deploy a EC2 VM and host a simple static "Fortune-of-the-Day Coming Soon" web page.](https://github.com/Andrews-repo/AWS-Project/blob/master/Basic%20Web%20Host/createServerWithENI.yml)
 
 * Take a snapshot of your VM, delete the VM, and deploy a new one from the snapshot. Basically disk backup + disk restore.
   
