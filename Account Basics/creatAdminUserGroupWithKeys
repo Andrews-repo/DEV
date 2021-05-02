@@ -1,37 +1,39 @@
 AWSTemplateFormatVersion: 2010-09-09
-Parameters:
-    Password:
-        NoEcho: 'true'
-        Type: String
-        Description: New account password
+Description: Creats an admin user/group and sets access keys.
+
 Resources:
   MyUser:
     Type: AWS::IAM::User
     Properties:
-      UserName: ADMIN
+      UserName: ADMIN2
       LoginProfile:
-        Password: 
-          !Ref 'Password'
+        Password: Password1@
+        PasswordResetRequired: yes
+        
   MyAccessKey:
     Type: AWS::IAM::AccessKey
     Properties:
-      UserName: !Ref "MyUser"    
+      UserName: !Ref "MyUser"  
+      
   MyGroup:
     Type: AWS::IAM::Group  
     Properties:
-        GroupName: admin
+        GroupName: admin2
         ManagedPolicyArns:
          - arn:aws:iam::aws:policy/AdministratorAccess
          - arn:aws:iam::aws:policy/job-function/Billing
+         
   Users:
     Type: AWS::IAM::UserToGroupAddition
     Properties:
       GroupName: !Ref 'MyGroup'
       Users: [!Ref 'MyUser']
+      
 Outputs:
     AccessKey:
       Value: !Ref 'MyAccessKey'
       Description: AWS AccessKeyID of new user.
+      
     SecretKey:
       Value: !GetAtt [MyAccessKey, SecretAccessKey]
       Description: AWSSecretAccessKey of new user. 
