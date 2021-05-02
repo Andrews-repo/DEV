@@ -1,22 +1,18 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: This CloudFormation template will create an admin user and admingroup, assigning AdminAccess and billing access to the admin user. 
-Parameters:
-    Password:
-        NoEcho: 'true'
-        Type: String
-        Description: New account password
+
 Resources:
   MyUser:
     Type: AWS::IAM::User
     Properties:
-      UserName: ADMIN
+      UserName: Admin
       LoginProfile:
-        Password: 
-          !Ref 'Password'
+        Password: Password1@
+        PasswordResetRequired: yes
   MyGroup:
     Type: AWS::IAM::Group  
     Properties:
-        GroupName: admin
+        GroupName: Admin
         ManagedPolicyArns:
          - arn:aws:iam::aws:policy/AdministratorAccess
          - arn:aws:iam::aws:policy/job-function/Billing
@@ -25,3 +21,4 @@ Resources:
     Properties:
       GroupName: !Ref 'MyGroup'
       Users: [!Ref 'MyUser']
+
