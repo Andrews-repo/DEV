@@ -1,4 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
+Description: Automates the process of establishing aws best practices by creating an Admin user/group, billing notifications, password settings, etc.
+
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
