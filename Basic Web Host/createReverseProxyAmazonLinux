@@ -1,0 +1,40 @@
+referencing this site, but having to figure it out for aws linux : https://phoenixnap.com/kb/nginx-reverse-proxy
+
+# update yum
+
+sudo yum update
+
+# install nginx
+
+sudo amazon-linux-extras install nginx1
+
+#start nginx
+
+sudo systemctl start nginx
+
+# enable nginx
+
+sudo systemctl enable nginx
+
+# check status nginx
+
+sudo systemctl status nginx
+
+# update /etc/nginx/nginx.conf
+
+server {
+
+listen 80;
+
+location / {
+
+proxy_pass http://my_server;
+
+}
+
+}
+
+# restart nginx 
+
+sudo service nginx restart
+
