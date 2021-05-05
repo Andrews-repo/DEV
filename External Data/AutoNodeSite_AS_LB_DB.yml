@@ -25,14 +25,14 @@ Resources:
       Description: A nice description.
       SourceDestCheck: 'false'
       GroupSet:
-        - sg-0da8c45dd859d8183
-      SubnetId: subnet-00f7a63e    
+        - sg-055c055ea1f7b8c99
+      SubnetId: subnet-b60753fa   
   
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: "ami-062f7200baf2fa504"
-      KeyName: "workkey"
+      ImageId: "ami-055873b3c4003c528"
+      KeyName: "keypairMAY"
       IamInstanceProfile: "DynamoDBfullaccessEC2"
       Monitoring: True
       UserData:
@@ -93,7 +93,7 @@ Resources:
       TargetGroupARNs: 
         - !Ref WSTargetGroup
       AvailabilityZones:
-        Fn::GetAZs: us-east-1          
+        Fn::GetAZs: us-east-2         
   
   CPUScaleUp:
     Type: AWS::AutoScaling::ScalingPolicy
@@ -119,14 +119,11 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Subnets: 
-        - subnet-00f7a63e
-        - subnet-041add0a
-        - subnet-568c820a
-        - subnet-79ada557
-        - subnet-fc1b169b
-        - subnet-fe0fd2b3
+        - subnet-b60753fa
+        - subnet-e70ae79a
+        - subnet-938532f8
       SecurityGroups:
-        - sg-0da8c45dd859d8183
+        - sg-055c055ea1f7b8c99
       Type: application
 
   WSListener:
@@ -149,5 +146,4 @@ Resources:
         - Key: deregistration_delay.timeout_seconds
           Value: 300
       TargetType: instance
-      VpcId: vpc-f33a6389  
-      
+      VpcId: vpc-72f47b19 
