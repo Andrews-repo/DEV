@@ -22,6 +22,7 @@ Resources:
       Monitoring: Yes
       UserData:
         Fn::Base64: !Sub |
+          sudo su
           #!/bin/bash
           sudo touch .bash_profile
           sudo yum update -y
