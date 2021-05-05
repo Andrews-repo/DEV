@@ -9,20 +9,19 @@ Resources:
       Description: A nice description.
       SourceDestCheck: 'false'
       GroupSet:
-        - sg-0da8c45dd859d8183
-      SubnetId: subnet-00f7a63e    
+        - sg-055c055ea1f7b8c99
+      SubnetId: subnet-b60753fa   
   
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: us-east-1e
-      ImageId: "ami-062f7200baf2fa504"
-      KeyName: "workkey"
+      AvailabilityZone: us-east-2c
+      ImageId: "ami-077e31c4939f6a2f3"
+      KeyName: "keypairMAY"
       IamInstanceProfile: "DynamoDBfullaccessEC2"
       Monitoring: Yes
       UserData:
         Fn::Base64: !Sub |
-          sudo su
           #!/bin/bash
           sudo touch .bash_profile
           sudo yum update -y
