@@ -11,3 +11,4 @@ Web Hosting Basics
 * [Checkpoint: You can view a simple HTML page served from your EC2 instance.](https://github.com/Andrews-repo/AWS-Project/blob/master/Basic%20Web%20Host/Webserver-ENI.yml)
   
  
+*[learned how to set up a reverse proxy]()
