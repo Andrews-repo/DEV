@@ -1,0 +1,149 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Launches an an autoscaling group for a server, a vpc 2 pub 2 priv, a server for nginx, and a dynamo db table.
+
+Resources:
+  myDynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: "Fortunes"      
+      AttributeDefinitions: 
+        - 
+          AttributeName: "fortuneID"
+          AttributeType: "N"
+
+      KeySchema: 
+        - 
+          AttributeName: "fortuneID"
+          KeyType: "HASH"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "10"
+        WriteCapacityUnits: "10"
+    
+  myENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+      Description: A nice description.
+      SourceDestCheck: 'false'
+      GroupSet:
+        - sg-055c055ea1f7b8c99
+      SubnetId: subnet-b60753fa   
+  
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: "ami-055873b3c4003c528"
+      KeyName: "keypairMAY"
+      IamInstanceProfile: "DynamoDBfullaccessEC2"
+      Monitoring: True
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo touch .bash_profile
+          sudo yum update -y
+          sudo yum install -y git
+          cd /home/ec2-user
+          sudo mkdir FortuneApp
+          cd FortuneApp
+          git init
+          git pull https://github.com/Andrews-repo/FortuneSite          
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+          nvm install node
+          npm install aws-sdk
+          npm install express --save
+          npm install async --save
+          npm install body-parser --save
+          npm install ejs --save
+          npm install random-number-between --save
+          npm install request --save
+          npm install pm2 -g --save
+          node FortunesItemOps2.js
+          pm2 start server.js
+      BlockDeviceMappings: 
+      - DeviceName: "/dev/xvda"
+        Ebs: 
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          VolumeSize: "8"
+      InstanceType: 't2.micro'
+      NetworkInterfaces:
+        - NetworkInterfaceId: !Ref myENI
+          DeviceIndex: 0 
+          
+  
+  myLaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: NodeLaunchConfig
+      InstanceType: t2.micro
+      InstanceId: !Ref WebServer
+      IamInstanceProfile: "DynamoDBfullaccessEC2"
+  
+  myASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: myASG
+      MinSize: 1
+      MaxSize: 6
+      DesiredCapacity: 1
+      HealthCheckGracePeriod: 300
+      LaunchConfigurationName: !Ref myLaunchConfig
+      TargetGroupARNs: 
+        - !Ref WSTargetGroup
+      AvailabilityZones:
+        Fn::GetAZs: us-east-2         
+  
+  CPUScaleUp:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties: 
+      AutoScalingGroupName: !Ref myASG
+      Cooldown: 300
+      EstimatedInstanceWarmup: 180
+      PolicyType: TargetTrackingScaling
+      TargetTrackingConfiguration: 
+         PredefinedMetricSpecification: 
+          PredefinedMetricType: ASGAverageCPUUtilization
+         TargetValue: 60
+
+  CPUScaleDown:
+      Type: AWS::AutoScaling::ScalingPolicy
+      Properties:
+        AdjustmentType: ChangeInCapacity
+        AutoScalingGroupName: !Ref myASG
+        Cooldown: 60
+        ScalingAdjustment: -1
+
+  WSLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Subnets: 
+        - subnet-b60753fa
+        - subnet-e70ae79a
+        - subnet-938532f8
+      SecurityGroups:
+        - sg-055c055ea1f7b8c99
+      Type: application
+
+  WSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties: 
+      DefaultActions: 
+        - Type: forward
+          TargetGroupArn: !Ref WSTargetGroup
+      LoadBalancerArn: !Ref WSLoadBalancer
+      Port: 80
+      Protocol: HTTP 
+
+  WSTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      Name: WSTargetGroup
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes: 
+        - Key: deregistration_delay.timeout_seconds
+          Value: 300
+      TargetType: instance
+      VpcId: vpc-72f47b19 
