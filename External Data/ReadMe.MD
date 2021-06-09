@@ -8,4 +8,3 @@ External Data
 
 * Checkpoint: Your HA/AutoScaled website can now load/save data to a database between users and sessions
 
-  The script linked above "DID" do this, but after a break from working it no longer works.
