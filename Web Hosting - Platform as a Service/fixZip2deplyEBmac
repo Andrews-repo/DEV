@@ -1,0 +1,7 @@
+This command needs to be run on the zip file made from the application contents.
+
+It removes extra files mac adds that mac the zip unusable by Elastic Beanstalk.
+
+
+
+zip -d nameofyourzipfile.zip __MACOSX/\*
